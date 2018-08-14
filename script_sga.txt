@@ -1,0 +1,23 @@
+#!/bin/bash
+
+mkdir -p /usr/local/nagios/etc/hosts/databases/oracle/pga
+sed -i 's/\!MAPESPVE\!caracas\!10000\!20000//g' *.cfg
+
+
+for z in $(ls |grep .cfg | sed 's/.cfg//g'); do
+maquina=(`grep -ri sql_lock . | grep $z | grep -v '#' | grep -v 'service_description' | sed 's/check_oracle_sql_lock2\!//g' | sed 's/check_command//g' | sed 's/\!//g' |  sed 's/\.\///g' |  sed 's/.cfg://g' | grep -v 'Binary' | sed 's/check_oracle_sql_lock3//g' | awk '{print $1}' | uniq`);
+base=(`grep -ri sql_lock . | grep $z |grep -v '#' | grep -v 'service_description' | sed 's/check_oracle_sql_lock2\!//g' | sed 's/check_command//g' | sed 's/\!//g' |  sed 's/\.\///g' |  sed 's/.cfg://g' | grep -v 'Binary' | sed 's/check_oracle_sql_lock3//g' | sed 's/MAPESPVE//g'| awk '{print $2}' | uniq`);
+senha=(`grep -ri tnsping . | grep $z |grep -v '#' | grep -v 'service_description' | sed 's/check_oracle_tnsping2\!//g' | sed 's/check_command//g' | sed 's/\.\///g' |  sed 's/.cfg://g' | grep -v 'Binary' | awk '{print $2}' | uniq`);
+
+LIMITE=`echo ${base[*]} | wc -w`
+
+for i in "${maquina[@]}"; do
+        for ((x=0; x <= $LIMITE-1 ; x++))  do
+                                echo -e "define service { \n \t \t host_name\t \t $i \n \t \t service_description\t Check_Oracle_"${base[$x]}"_SGA_Shared_Pool_Free \n \t \t use\t \t \t generic-database \n \t \t check_command\t \t  check_oracle_sga_shared_pool_free"!""${senha[$x]}"10:"!"5: \n \t \t }\n" >>  /usr/local/nagios/etc/hosts/databases/oracle/pga/$i.cfg
+                 done; done; done;
+
+define command {
+       command_name                check_oracle_sga_shared_pool_free
+       command_line                /usr/bin/sudo /usr/bin/su - nrpe2 -c "$USER1$/check_oracle_health --connect $ARG1$ --username $ARG2$ --password $ARG3$ --mode sga-shared-pool-free --warning $ARG4$ --critical $ARG5$"
+}
+									/usr/bin/sudo /usr/bin/su - nrpe2 -c "$USER1$/check_oracle_health:wq!
