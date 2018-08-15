@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mkdir -p /usr/local/nagios/etc/hosts/databases/oracle/pga
-sed -i 's/\!MAPESPVE\!caracas\!10000\!20000//g' *.cfg
+
+
 
 
 for z in $(ls |grep .cfg | sed 's/.cfg//g'); do
@@ -16,8 +16,3 @@ for i in "${maquina[@]}"; do
                                 echo -e "define service { \n \t \t host_name\t \t $i \n \t \t service_description\t Check_Oracle_"${base[$x]}"_SGA_Shared_Pool_Free \n \t \t use\t \t \t generic-database \n \t \t check_command\t \t  check_oracle_sga_shared_pool_free"!""${senha[$x]}"10:"!"5: \n \t \t }\n" >>  /usr/local/nagios/etc/hosts/databases/oracle/pga/$i.cfg
                  done; done; done;
 
-define command {
-       command_name                check_oracle_sga_shared_pool_free
-       command_line                /usr/bin/sudo /usr/bin/su - nrpe2 -c "$USER1$/check_oracle_health --connect $ARG1$ --username $ARG2$ --password $ARG3$ --mode sga-shared-pool-free --warning $ARG4$ --critical $ARG5$"
-}
-									/usr/bin/sudo /usr/bin/su - nrpe2 -c "$USER1$/check_oracle_health:wq!
