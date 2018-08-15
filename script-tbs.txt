@@ -65,45 +65,4 @@ if [ -z "$SID" ]
                                                          else
                     echo  "OK : tbs $TBS $TAM % of use"
                                         fi
-fi
-~
-DOM_MRDSUN_SUNDBMP
-
-define command {
-       command_name                             check_tbs
-       command_line                             $USER1$/check_nrpe -H $HOSTADDRESS$ -n -c check_tbs -a $ARG1$ $ARG2$
-        }
-
-command[check_tbs]=/usr/lib64/nagios/plugins/check_tbs.sh $ARG1$ $ARG2$
-command[check_tbs]=/opt/iexpress/nagios/libexec/check_tbs.sh $ARG1$ $ARG2$
-command[check_tbs]=/usr/local/nagios/libexec/check_tbs.sh $ARG1$ $ARG2$
-
-define command {
-       command_name                             check_nrpe1
-       command_line                             $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_qntprocess -a $ARG1$ $ARG2$
-}
-
-
-
-
-/usr/local/nagios/libexec/check_tbs.sh
-
-check_qntprocess.sh
-
-command[check_qntprocess]=/usr/lib64/nagios/plugins/check_qntprocess.sh $ARG1$ $ARG2$
-
-#!/bin/bash
-
-service=$1
-numservices=$2
-process=`ps -ef | grep -i $service |  grep -v $0 |  grep -v 'grep'| wc -l`
-
-if [[ "$process" -lt "$numservices" ]];
-        then
-        echo -e "CRITICAL: $service is not running"
-        exit 2
-      else
-        echo -e "OK: $service is running"
-        exit 0
-fi
-
+f
