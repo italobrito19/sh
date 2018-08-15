@@ -18,7 +18,7 @@ fi
 echo $SID > sid.txt
 TBS=(`/usr/bin/sudo /usr/bin/su - nrpe2 -c "/usr/local/nagios/libexec/check_oracle_health --connect $SID --username MAPESPVE --password caracas --mode list-tablespaces | grep -vi 'OK' | grep -vi 'undo' | grep -vi 'temp'"`)
 #BANCO=(` '[:upper:]' '[:lower:]' < $SID`)
-BANCO=(`sed -i 's/DOM_MRDPALICDB_//g' sid.txt ; cat sid.txt `)
+BANCO=(`sed -i 's///g' sid.txt ; cat sid.txt `)
 for i in "${TBS[@]}" ;
 
                         #do echo -e "define service { \n \t \t host_name\t \t $SERVER \n \t \t service_description\t Check_Oracle_"$SID"_Tablespace $i \n \t \t use\t \t \t generic-database \n \t \t check_command\t \t check_nrp"!"check_tbs1"!""$BANCO""!""$i"\n \t \t }\n" >> $SERVER.cfg;
@@ -27,16 +27,3 @@ for i in "${TBS[@]}" ;
         done 
 		
 		
-BI
-
-DOM_MRDPALICDB_PALIC
-
-
-DATA_01                                 92
-USERS                                   86
-INDEX_01                                86
-SYSAUX                                  82
-SYSTEM                                  47
-TEMP                                     1
-UNDOTBS1                                 0
-TBS_AUDIT 
