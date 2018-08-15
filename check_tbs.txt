@@ -16,7 +16,7 @@ else
         echo "Erro no nome do servidor"
 fi
 echo $SID > sid.txt
-TBS=(`/usr/bin/sudo /usr/bin/su - nrpe2 -c "/usr/local/nagios/libexec/check_oracle_health --connect $SID --username MAPESPVE --password caracas --mode list-tablespaces | grep -vi 'OK' | grep -vi 'undo' | grep -vi 'temp'"`)
+TBS=(`/usr/bin/sudo /usr/bin/su - nrpe2 -c "/usr/local/nagios/libexec/check_oracle_health --connect $SID --username  --password  --mode list-tablespaces | grep -vi 'OK' | grep -vi 'undo' | grep -vi 'temp'"`)
 #BANCO=(` '[:upper:]' '[:lower:]' < $SID`)
 BANCO=(`sed -i 's///g' sid.txt ; cat sid.txt `)
 for i in "${TBS[@]}" ;
