@@ -6,7 +6,7 @@
 
 for z in $(ls |grep .cfg | sed 's/.cfg//g'); do
 maquina=(`grep -ri sql_lock . | grep $z | grep -v '#' | grep -v 'service_description' | sed 's/check_oracle_sql_lock2\!//g' | sed 's/check_command//g' | sed 's/\!//g' |  sed 's/\.\///g' |  sed 's/.cfg://g' | grep -v 'Binary' | sed 's/check_oracle_sql_lock3//g' | awk '{print $1}' | uniq`);
-base=(`grep -ri sql_lock . | grep $z |grep -v '#' | grep -v 'service_description' | sed 's/check_oracle_sql_lock2\!//g' | sed 's/check_command//g' | sed 's/\!//g' |  sed 's/\.\///g' |  sed 's/.cfg://g' | grep -v 'Binary' | sed 's/check_oracle_sql_lock3//g' | sed 's/MAPESPVE//g'| awk '{print $2}' | uniq`);
+base=(`grep -ri sql_lock . | grep $z |grep -v '#' | grep -v 'service_description' | sed 's/check_oracle_sql_lock2\!//g' | sed 's/check_command//g' | sed 's/\!//g' |  sed 's/\.\///g' |  sed 's/.cfg://g' | grep -v 'Binary' | sed 's/check_oracle_sql_lock3//g' | awk '{print $2}' | uniq`);
 senha=(`grep -ri tnsping . | grep $z |grep -v '#' | grep -v 'service_description' | sed 's/check_oracle_tnsping2\!//g' | sed 's/check_command//g' | sed 's/\.\///g' |  sed 's/.cfg://g' | grep -v 'Binary' | awk '{print $2}' | uniq`);
 
 LIMITE=`echo ${base[*]} | wc -w`
