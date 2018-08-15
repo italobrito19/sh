@@ -13,6 +13,6 @@ LIMITE=`echo ${base[*]} | wc -w`
 
 for i in "${maquina[@]}"; do
         for ((x=0; x <= $LIMITE-1 ; x++))  do
-                                echo -e "define service { \n \t \t host_name\t \t $i \n \t \t service_description\t Check_Oracle_"${base[$x]}"_SGA_Shared_Pool_Free \n \t \t use\t \t \t generic-database \n \t \t check_command\t \t  check_oracle_sga_shared_pool_free"!""${senha[$x]}"10:"!"5: \n \t \t }\n" >>  /usr/local/nagios/etc/hosts/databases/oracle/pga/$i.cfg
+                                echo -e "define service { \n \t \t host_name\t \t $i \n \t \t service_description\t Check_Oracle_"${base[$x]}"_SGA_Shared_Pool_Free \n \t \t use\t \t \t generic-database \n \t \t check_command\t \t  check_oracle_sga_shared_pool_free"!""${senha[$x]}"10:"!"5: \n \t \t }\n" >>  $i.cfg
                  done; done; done;
 
